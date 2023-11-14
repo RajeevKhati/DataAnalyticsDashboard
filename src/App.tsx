@@ -17,9 +17,10 @@ function App() {
             flexGrow: 1,
             p: 3,
             // bgcolor: "background.paper",
-            bgcolor: "red",
-            height: "100vh",
+            // bgcolor: "red",
+            height: "50vh",
           }}
+          className="hello"
         >
           <Toolbar />
           <MainLayout />
