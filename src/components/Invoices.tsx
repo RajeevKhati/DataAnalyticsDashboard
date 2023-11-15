@@ -1,11 +1,11 @@
 import { Paper } from "@mui/material";
 import { useRef, useEffect } from "react";
-import { select, scaleLinear, axisBottom, line, curveCardinal } from "d3";
+import { select, scaleLinear, axisBottom, max, scaleBand } from "d3";
 import { useResizeObserver } from "../hooks/useResizeObserver";
 
-const data = [0, 25, 35, 15, 100];
+const data = [1, 25, 35, 15, 100];
 
-export default function CheckAccount() {
+export default function Invoices() {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useResizeObserver(containerRef);
@@ -13,12 +13,13 @@ export default function CheckAccount() {
   useEffect(() => {
     if (svgRef.current && dimensions) {
       const svg = select(svgRef.current);
-      const xScale = scaleLinear()
-        .domain([0, data.length - 1])
-        .range([0, dimensions.width]);
+      const xScale = scaleBand<number>()
+        .domain(data.map((_value, index) => index))
+        .range([0, dimensions.width])
+        .padding(0.5);
 
       const yScale = scaleLinear()
-        .domain([0, 100])
+        .domain([0, max(data) || 0])
         .range([dimensions.height, 0]);
 
       const xAxis = axisBottom(xScale).ticks(data.length);
@@ -28,19 +29,15 @@ export default function CheckAccount() {
         .style("transform", `translateY(${dimensions.height}px)`)
         .call(xAxis);
 
-      const myLine = line()
-        .x((_, index) => xScale(index))
-        .y((_, index) => yScale(data[index]))
-        .curve(curveCardinal);
-
       svg
-        .selectAll(".line")
-        .data([data])
-        .join("path")
-        .attr("class", "line")
-        .attr("d", (d: unknown) => myLine(d as [number, number][]))
-        .attr("fill", "none")
-        .attr("stroke", "blue");
+        .selectAll(".bar")
+        .data(data)
+        .join("rect")
+        .attr("class", "bar")
+        .attr("x", (_value, index) => xScale(index) || 0)
+        .attr("y", yScale)
+        .attr("width", xScale.bandwidth())
+        .attr("height", (val) => dimensions.height - yScale(val));
     }
   }, [dimensions]);
 

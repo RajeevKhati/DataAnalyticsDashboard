@@ -1,5 +1,7 @@
 import { Grid } from "@mui/material";
 import CheckAccount from "./CheckAccount";
+import Invoices from "./Invoices";
+import CashFlow from "./CashFlow";
 
 export default function MainLayout() {
   return (
@@ -7,8 +9,12 @@ export default function MainLayout() {
       <Grid item xs={6} sx={{ height: "100%" }}>
         <CheckAccount />
       </Grid>
-      <Grid item xs={6} sx={{ height: "100%" }}></Grid>
-      <Grid item xs={6} sx={{ height: "100%" }}></Grid>
+      <Grid item xs={6} sx={{ height: "100%" }}>
+        <Invoices />
+      </Grid>
+      <Grid item xs={6} sx={{ height: "100%" }}>
+        <CashFlow />
+      </Grid>
       <Grid item xs={6} sx={{ height: "100%" }}></Grid>
     </Grid>
   );
