@@ -15,7 +15,7 @@ export enum MonthMapper {
   Dec,
 }
 
-export const colors = {
+export const colors: { [key: string]: string } = {
   out: theme.palette.primary.main,
   in: theme.palette.primary.dark,
   lightBlue: "#E8EEFD",

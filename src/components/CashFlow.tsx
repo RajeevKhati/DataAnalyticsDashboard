@@ -21,9 +21,9 @@ export default function CashFlow() {
       const svg = select(svgRef.current);
       const stackGenerator = stack().keys(keys);
       const layers = stackGenerator(cashFlowData);
-      const extent = [
+      const extent: [number, number] = [
         0,
-        max(layers, (layer) => max(layer, (sequence) => sequence[1])),
+        max(layers, (layer) => max(layer, (sequence) => sequence[1] || 0)) || 0,
       ];
 
       const xScale = scaleBand<number>()
@@ -52,7 +52,10 @@ export default function CashFlow() {
         .selectAll("rect")
         .data((layer) => layer)
         .join("rect")
-        .attr("x", (_sequence, index) => xScale(index + 1))
+        .attr("x", (_sequence, index) => {
+          const xValue = xScale(index + 1);
+          return xValue !== undefined ? xValue : 0;
+        })
         .attr("width", xScale.bandwidth())
         .attr("y", (sequence) => yScale(sequence[1]))
         .attr(
