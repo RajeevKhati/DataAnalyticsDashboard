@@ -34,7 +34,7 @@ export default function CashFlow() {
         .domain(data.map((d) => d.month))
         .range([0, dimensions.width])
         .padding(0.25)
-        .paddingInner(0.8)
+        .paddingInner(0.87)
         .paddingOuter(0.8)
         .align(0.5);
 

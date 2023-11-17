@@ -7,7 +7,7 @@ import { colors } from "../utils/constants";
 import { theme } from "../utils/theme";
 import FileUploadModal from "./FileUploadModal";
 
-const data = [1, 25, 35, 15, 100];
+const data = [90, 25, 35, 80, 100];
 
 const InvoiceButton = styled(Button)<ButtonProps>(({ theme }) => ({
   backgroundColor: colors.lightBlue,
@@ -37,7 +37,7 @@ export default function Invoices() {
         .domain(data.map((_value, index) => index))
         .range([0, dimensions.width])
         .padding(0.5)
-        .paddingInner(0.8)
+        .paddingInner(0.87)
         .paddingOuter(0.8)
         .align(0.5);
 
