@@ -1,4 +1,3 @@
-import { Grid } from "@mui/material";
 import CheckAccount from "./CheckAccount";
 import Invoices from "./Invoices";
 import CashFlow from "./CashFlow";
@@ -11,8 +10,7 @@ export default function MainLayout() {
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
         gridTemplateRows: "1fr 1fr",
-        height:"86%",
-        gap:12,
+        gap: 20,
       }}
     >
       <CheckAccount />

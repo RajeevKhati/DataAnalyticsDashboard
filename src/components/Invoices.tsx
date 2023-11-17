@@ -6,8 +6,8 @@ import { HeaderTile } from "./HeaderTile";
 import { colors } from "../utils/constants";
 import { theme } from "../utils/theme";
 import FileUploadModal from "./FileUploadModal";
-
-const data = [90, 25, 35, 80, 100];
+import { useRandomizeDataContext } from "../contexts/randomize-data-context/useRandomizeDataContext";
+import { getInvoiceScale } from "../utils/utils";
 
 const InvoiceButton = styled(Button)<ButtonProps>(({ theme }) => ({
   backgroundColor: colors.lightBlue,
@@ -29,12 +29,13 @@ export default function Invoices() {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useResizeObserver(containerRef);
   const [modalOpen, setModalOpen] = useState(false);
+  const { invoiceData } = useRandomizeDataContext();
 
   useEffect(() => {
     if (svgRef.current && dimensions) {
       const svg = select(svgRef.current);
       const xScale = scaleBand<number>()
-        .domain(data.map((_value, index) => index))
+        .domain(invoiceData.map((_value, index) => index))
         .range([0, dimensions.width])
         .padding(0.5)
         .paddingInner(0.87)
@@ -42,10 +43,12 @@ export default function Invoices() {
         .align(0.5);
 
       const yScale = scaleLinear()
-        .domain([0, max(data) || 0])
+        .domain([0, max(invoiceData) || 0])
         .range([dimensions.height, 0]);
 
-      const xAxis = axisBottom(xScale).ticks(data.length);
+      const xAxis = axisBottom(xScale)
+        .ticks(invoiceData.length)
+        .tickFormat((_val, index) => getInvoiceScale(invoiceData, index));
 
       svg
         .select<SVGSVGElement>(".x-axis")
@@ -54,7 +57,7 @@ export default function Invoices() {
 
       svg
         .selectAll(".bar")
-        .data(data)
+        .data(invoiceData)
         .join("rect")
         .attr("class", "bar")
         .attr("fill", theme.palette.primary.main)
@@ -65,7 +68,7 @@ export default function Invoices() {
         .attr("rx", 5)
         .attr("ry", 5);
     }
-  }, [dimensions]);
+  }, [dimensions, invoiceData]);
 
   const handleUpload = (file: File) => {
     // Handle the uploaded file here

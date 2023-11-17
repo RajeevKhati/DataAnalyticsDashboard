@@ -5,10 +5,11 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import { InputBase, styled } from "@mui/material";
+import { Button, ButtonProps, InputBase, styled } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { useRandomizeDataContext } from "../contexts/randomize-data-context/useRandomizeDataContext";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -36,7 +37,21 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
+  color: theme.palette.background.default,
+  backgroundColor: theme.palette.primary.main,
+  fontWeight: 700,
+  boxShadow: "none",
+  letterSpacing: 0.1,
+  textTransform: "none",
+  "&:hover": {
+    backgroundColor: theme.palette.primary.main,
+    boxShadow: "none",
+  },
+}));
+
 export default function NavBar() {
+  const { randomizeAllData } = useRandomizeDataContext();
   return (
     <div>
       <AppBar
@@ -52,7 +67,6 @@ export default function NavBar() {
               variant="h6"
               noWrap
               component="a"
-              href="#app-bar-with-responsive-menu"
               sx={{
                 mr: 2,
                 fontFamily: "monospace",
@@ -63,8 +77,12 @@ export default function NavBar() {
                 flexGrow: 1,
               }}
             >
-              LOGO
+              ASSIDUUS
             </Typography>
+
+            <StyledButton onClick={randomizeAllData}>
+              Randomize Data
+            </StyledButton>
 
             <Search>
               <SearchIconWrapper>
@@ -76,7 +94,7 @@ export default function NavBar() {
               />
             </Search>
 
-            <Box sx={{}}>
+            <Box>
               <IconButton
                 size="large"
                 aria-label="show new notifications"
@@ -95,8 +113,8 @@ export default function NavBar() {
               >
                 <Avatar
                   sx={{ width: 34, height: 34 }}
-                  alt="Remy Sharp"
-                  src="/static/images/avatar/2.jpg"
+                  alt="Travis Howard"
+                  src="https://mui.com/static/images/avatar/2.jpg"
                 />
               </IconButton>
               <IconButton size="small" aria-label="drop down" color="inherit">

@@ -1,40 +1,43 @@
 import { Box, Paper, SelectChangeEvent } from "@mui/material";
 import React, { useRef, useEffect } from "react";
-import { select, scaleLinear, axisBottom, line, curveCardinal } from "d3";
+import { select, scaleLinear, axisBottom, line, curveCardinal, max } from "d3";
 import { useResizeObserver } from "../hooks/useResizeObserver";
 import { HeaderTile } from "./HeaderTile";
 import { Dropdown } from "./Dropdown";
 import { theme } from "../utils/theme";
-
-const data = [0, 25, 35, 15, 100];
+import { useRandomizeDataContext } from "../contexts/randomize-data-context/useRandomizeDataContext";
 
 export default function CheckAccount() {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useResizeObserver(containerRef);
+  const { randomizeCheckingAccountData, checkingAccountData } =
+    useRandomizeDataContext();
 
   const [account, setAccount] = React.useState("");
   const [month, setMonth] = React.useState("");
 
   const handleChangeAccount = (event: SelectChangeEvent) => {
     setAccount(event.target.value);
+    randomizeCheckingAccountData();
   };
   const handleChangeMonth = (event: SelectChangeEvent) => {
     setMonth(event.target.value);
+    randomizeCheckingAccountData();
   };
 
   useEffect(() => {
     if (svgRef.current && dimensions) {
       const svg = select(svgRef.current);
       const xScale = scaleLinear()
-        .domain([0, data.length - 1])
+        .domain([0, checkingAccountData.length - 1])
         .range([0, dimensions.width]);
 
       const yScale = scaleLinear()
-        .domain([0, 100])
+        .domain([0, max(checkingAccountData) || 0])
         .range([dimensions.height, 0]);
 
-      const xAxis = axisBottom(xScale).ticks(data.length);
+      const xAxis = axisBottom(xScale).ticks(checkingAccountData.length);
 
       svg
         .select<SVGSVGElement>(".x-axis")
@@ -43,12 +46,12 @@ export default function CheckAccount() {
 
       const myLine = line()
         .x((_, index) => xScale(index))
-        .y((_, index) => yScale(data[index]))
+        .y((_, index) => yScale(checkingAccountData[index]))
         .curve(curveCardinal);
 
       svg
         .selectAll(".line")
-        .data([data])
+        .data([checkingAccountData])
         .join("path")
         .attr("class", "line")
         .attr("d", (d: unknown) => myLine(d as [number, number][]))
@@ -56,7 +59,7 @@ export default function CheckAccount() {
         .attr("stroke", theme.palette.primary.main)
         .attr("stroke-width", 2);
     }
-  }, [dimensions]);
+  }, [checkingAccountData, dimensions]);
 
   return (
     <Paper
