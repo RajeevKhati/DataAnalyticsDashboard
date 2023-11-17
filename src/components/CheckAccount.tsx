@@ -4,6 +4,7 @@ import { select, scaleLinear, axisBottom, line, curveCardinal } from "d3";
 import { useResizeObserver } from "../hooks/useResizeObserver";
 import { HeaderTile } from "./HeaderTile";
 import { Dropdown } from "./Dropdown";
+import { theme } from "../utils/theme";
 
 const data = [0, 25, 35, 15, 100];
 
@@ -52,7 +53,8 @@ export default function CheckAccount() {
         .attr("class", "line")
         .attr("d", (d: unknown) => myLine(d as [number, number][]))
         .attr("fill", "none")
-        .attr("stroke", "blue");
+        .attr("stroke", theme.palette.primary.main)
+        .attr("stroke-width", 2);
     }
   }, [dimensions]);
 
@@ -75,7 +77,7 @@ export default function CheckAccount() {
           }}
         >
           <p>Checking Account</p>
-          <div style={{ display: "flex", width: "50%", gap:"8px" }}>
+          <div style={{ display: "flex", width: "50%", gap: "8px" }}>
             <Dropdown
               label="Accounts"
               labelId="account-id"

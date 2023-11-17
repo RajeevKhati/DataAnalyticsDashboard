@@ -1,3 +1,5 @@
+import { theme } from "./theme";
+
 export enum MonthMapper {
   January = 1,
   February,
@@ -14,8 +16,8 @@ export enum MonthMapper {
 }
 
 export const colors = {
-  in: "blue",
-  out: "green",
+  out: theme.palette.primary.main,
+  in: theme.palette.primary.dark,
   lightBlue: "#E8EEFD",
   textGreen: "#80C29B",
 } as const;

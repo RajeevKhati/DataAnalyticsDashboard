@@ -1,9 +1,11 @@
 import { Box, Button, ButtonProps, Paper, styled } from "@mui/material";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { select, scaleLinear, axisBottom, max, scaleBand } from "d3";
 import { useResizeObserver } from "../hooks/useResizeObserver";
 import { HeaderTile } from "./HeaderTile";
 import { colors } from "../utils/constants";
+import { theme } from "../utils/theme";
+import FileUploadModal from "./FileUploadModal";
 
 const data = [1, 25, 35, 15, 100];
 
@@ -26,6 +28,7 @@ export default function Invoices() {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useResizeObserver(containerRef);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     if (svgRef.current && dimensions) {
@@ -33,7 +36,10 @@ export default function Invoices() {
       const xScale = scaleBand<number>()
         .domain(data.map((_value, index) => index))
         .range([0, dimensions.width])
-        .padding(0.5);
+        .padding(0.5)
+        .paddingInner(0.8)
+        .paddingOuter(0.8)
+        .align(0.5);
 
       const yScale = scaleLinear()
         .domain([0, max(data) || 0])
@@ -51,42 +57,61 @@ export default function Invoices() {
         .data(data)
         .join("rect")
         .attr("class", "bar")
+        .attr("fill", theme.palette.primary.main)
         .attr("x", (_value, index) => xScale(index) || 0)
         .attr("y", yScale)
         .attr("width", xScale.bandwidth())
-        .attr("height", (val) => dimensions.height - yScale(val));
+        .attr("height", (val) => dimensions.height - yScale(val))
+        .attr("rx", 5)
+        .attr("ry", 5);
     }
   }, [dimensions]);
 
+  const handleUpload = (file: File) => {
+    // Handle the uploaded file here
+    console.log("File uploaded:", file);
+  };
+
   return (
-    <Paper
-      elevation={2}
-      sx={{
-        display: "grid",
-        gridTemplateColumns: "1fr",
-        gridTemplateRows: "20% 80%",
-        backgroundColor: "background.default",
-      }}
-    >
-      <HeaderTile>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-          }}
-        >
-          <p>Invoices owned to you</p>
-          <InvoiceButton variant="contained">New Sales Invoice</InvoiceButton>
-        </Box>
-      </HeaderTile>
-      <div ref={containerRef} style={{ height: "100%", width: "100%" }}>
-        <svg style={{ width: "100%", height: "100%" }} ref={svgRef}>
-          <g className="x-axis"></g>
-          <g className="y-axis"></g>
-        </svg>
-      </div>
-    </Paper>
+    <>
+      <Paper
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "1fr",
+          gridTemplateRows: "20% 80%",
+          backgroundColor: "background.default",
+        }}
+      >
+        <HeaderTile>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <p>Invoices owned to you</p>
+            <InvoiceButton
+              onClick={() => setModalOpen(true)}
+              variant="contained"
+            >
+              New Sales Invoice
+            </InvoiceButton>
+          </Box>
+        </HeaderTile>
+        <div ref={containerRef} style={{ height: "100%", width: "100%" }}>
+          <svg style={{ width: "100%", height: "100%" }} ref={svgRef}>
+            <g className="x-axis"></g>
+            <g className="y-axis"></g>
+          </svg>
+        </div>
+      </Paper>
+      <FileUploadModal
+        open={modalOpen}
+        onDialogClose={() => setModalOpen(false)}
+        onUpload={handleUpload}
+      />
+    </>
   );
 }

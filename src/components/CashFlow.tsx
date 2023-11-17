@@ -1,8 +1,11 @@
-import { Paper } from "@mui/material";
+import { Paper, Box } from "@mui/material";
 import { useRef, useEffect } from "react";
 import { select, axisBottom, scaleBand, stack, max, scaleLinear } from "d3";
 import { useResizeObserver } from "../hooks/useResizeObserver";
 import { MonthMapper, colors } from "../utils/constants";
+import { HeaderTile } from "./HeaderTile";
+import { ColorIndicator } from "./ColorIndicator";
+import { theme } from "../utils/theme";
 
 const data = [
   { month: 1, in: 10, out: 20 },
@@ -10,7 +13,7 @@ const data = [
   { month: 3, in: 80, out: 20 },
   { month: 4, in: 90, out: 10 },
 ];
-const keys = ["in", "out"];
+const keys = ["out", "in"];
 
 export default function CashFlow() {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -30,7 +33,10 @@ export default function CashFlow() {
       const xScale = scaleBand<number>()
         .domain(data.map((d) => d.month))
         .range([0, dimensions.width])
-        .padding(0.25);
+        .padding(0.25)
+        .paddingInner(0.8)
+        .paddingOuter(0.8)
+        .align(0.5);
 
       const yScale = scaleLinear().domain(extent).range([dimensions.height, 0]);
 
@@ -61,13 +67,36 @@ export default function CashFlow() {
   }, [dimensions]);
 
   return (
-    <div ref={containerRef} style={{ height: "100%", width: "100%" }}>
-      <Paper elevation={2} sx={{ height: "100%", width: "100%" }}>
+    <Paper
+      sx={{
+        display: "grid",
+        gridTemplateColumns: "1fr",
+        gridTemplateRows: "20% 80%",
+        backgroundColor: "background.default",
+      }}
+    >
+      <HeaderTile>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <p>Total cash flow</p>
+          <div style={{ display: "flex", gap: "12px" }}>
+            <ColorIndicator color={theme.palette.primary.dark} label="in" />
+            <ColorIndicator color={theme.palette.primary.main} label="out" />
+          </div>
+        </Box>
+      </HeaderTile>
+      <div ref={containerRef} style={{ height: "100%", width: "100%" }}>
         <svg style={{ width: "100%", height: "100%" }} ref={svgRef}>
           <g className="x-axis"></g>
           <g className="y-axis"></g>
         </svg>
-      </Paper>
-    </div>
+      </div>
+    </Paper>
   );
 }
