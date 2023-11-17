@@ -16,4 +16,6 @@ export enum MonthMapper {
 export const colors = {
   in: "blue",
   out: "green",
-};
+  lightBlue: "#E8EEFD",
+  textGreen: "#80C29B",
+} as const;

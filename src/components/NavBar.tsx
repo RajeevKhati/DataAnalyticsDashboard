@@ -38,72 +38,74 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function NavBar() {
   return (
-    <AppBar
-      position="fixed"
-      sx={{
-        bgcolor: "background.default",
-        zIndex: (theme) => theme.zIndex.drawer + 1,
-      }}
-    >
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-              flexGrow: 1,
-            }}
-          >
-            LOGO
-          </Typography>
-
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
-
-          <Box sx={{}}>
-            <IconButton
-              size="large"
-              aria-label="show new notifications"
-              color="inherit"
+    <div>
+      <AppBar
+        position="fixed"
+        sx={{
+          bgcolor: "background.default",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
+      >
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="#app-bar-with-responsive-menu"
+              sx={{
+                mr: 2,
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+                flexGrow: 1,
+              }}
             >
-              <NotificationsIcon />
-            </IconButton>
+              LOGO
+            </Typography>
 
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-              sx={{ padding: "5px" }}
-            >
-              <Avatar
-                sx={{ width: 34, height: 34 }}
-                alt="Remy Sharp"
-                src="/static/images/avatar/2.jpg"
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
               />
-            </IconButton>
-            <IconButton size="small" aria-label="drop down" color="inherit">
-              <ArrowDropDownIcon />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+            </Search>
+
+            <Box sx={{}}>
+              <IconButton
+                size="large"
+                aria-label="show new notifications"
+                color="inherit"
+              >
+                <NotificationsIcon />
+              </IconButton>
+
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                color="inherit"
+                sx={{ padding: "5px" }}
+              >
+                <Avatar
+                  sx={{ width: 34, height: 34 }}
+                  alt="Remy Sharp"
+                  src="/static/images/avatar/2.jpg"
+                />
+              </IconButton>
+              <IconButton size="small" aria-label="drop down" color="inherit">
+                <ArrowDropDownIcon />
+              </IconButton>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+    </div>
   );
 }

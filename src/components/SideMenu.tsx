@@ -14,7 +14,6 @@ const drawerWidth = 240;
 
 export default function SideMenu() {
   return (
-  
       <Drawer
         variant="permanent"
         sx={{

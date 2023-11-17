@@ -7,7 +7,7 @@ import Toolbar from "@mui/material/Toolbar";
 
 function App() {
   return (
-    <>
+    <Box sx={{ backgroundColor: "background.paper" }}>
       <NavBar />
       <Box sx={{ display: "flex" }}>
         <SideMenu />
@@ -15,18 +15,16 @@ function App() {
           component="main"
           sx={{
             flexGrow: 1,
-            p: 3,
-            // bgcolor: "background.paper",
-            // bgcolor: "red",
-            height: "50vh",
+            p: 2,
+            height: "100vh",
+            overflow: "auto",
           }}
-          className="hello"
         >
           <Toolbar />
           <MainLayout />
         </Box>
       </Box>
-    </>
+    </Box>
   );
 }
 
