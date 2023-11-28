@@ -8,6 +8,7 @@ import { theme } from "../utils/theme";
 import FileUploadModal from "./FileUploadModal";
 import { useRandomizeDataContext } from "../contexts/randomize-data-context/useRandomizeDataContext";
 import { getInvoiceScale } from "../utils/utils";
+import { ToolTip, TooltipProps } from "./ToolTip";
 
 const InvoiceButton = styled(Button)<ButtonProps>(({ theme }) => ({
   backgroundColor: colors.lightBlue,
@@ -29,6 +30,7 @@ export default function Invoices() {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useResizeObserver(containerRef);
   const [modalOpen, setModalOpen] = useState(false);
+  const [tooltipData, setTooltipData] = useState<TooltipProps | null>(null);
   const { invoiceData } = useRandomizeDataContext();
 
   useEffect(() => {
@@ -66,7 +68,15 @@ export default function Invoices() {
         .attr("width", xScale.bandwidth())
         .attr("height", (val) => dimensions.height - yScale(val))
         .attr("rx", 5)
-        .attr("ry", 5);
+        .attr("ry", 5)
+        .on("mouseover", (e, data) => {
+          const { x, y } = e;
+          console.log("event", e);
+          setTooltipData({ x, y, data });
+        })
+        .on("mouseleave", () => {
+          setTooltipData(null);
+        });
     }
   }, [dimensions, invoiceData]);
 
@@ -115,6 +125,7 @@ export default function Invoices() {
         onDialogClose={() => setModalOpen(false)}
         onUpload={handleUpload}
       />
+      {tooltipData ? <ToolTip {...tooltipData} /> : null}
     </>
   );
 }
