@@ -10,6 +10,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useRandomizeDataContext } from "../contexts/randomize-data-context/useRandomizeDataContext";
+import MenuIcon from "@mui/icons-material/Menu";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -50,7 +51,11 @@ const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
   },
 }));
 
-export default function NavBar() {
+interface NavBarProps {
+  handleToggle: () => void;
+}
+
+export default function NavBar({ handleToggle }: NavBarProps) {
   const { randomizeAllData } = useRandomizeDataContext();
   return (
     <div>
@@ -63,6 +68,15 @@ export default function NavBar() {
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleToggle}
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
             <Typography
               variant="h6"
               noWrap

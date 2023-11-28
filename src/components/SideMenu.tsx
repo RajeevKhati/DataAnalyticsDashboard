@@ -32,7 +32,12 @@ const listItems: ListItem[] = [
   { label: "Contacts", isSelected: false, icon: <ContactsIcon /> },
 ];
 
-export default function SideMenu() {
+interface SideMenuProps {
+  isOpen: boolean;
+  handleToggle: () => void;
+}
+
+export default function SideMenu({ isOpen, handleToggle }: SideMenuProps) {
   const [list, setList] = useState<ListItem[]>(listItems);
 
   const handleItemClick = ({ label }: ListItem) => {
@@ -47,7 +52,7 @@ export default function SideMenu() {
 
   return (
     <Drawer
-      variant="permanent"
+      variant="temporary"
       sx={{
         width: drawerWidth,
         flexShrink: 0,
@@ -56,6 +61,8 @@ export default function SideMenu() {
           boxSizing: "border-box",
         },
       }}
+      open={isOpen}
+      onClose={handleToggle}
     >
       <Toolbar />
       <Box sx={{ overflow: "auto" }}>

@@ -20,4 +20,5 @@ export const colors: { [key: string]: string } = {
   in: theme.palette.primary.dark,
   lightBlue: "#E8EEFD",
   textGreen: "#80C29B",
+  textBlackLight:"#00000055"
 } as const;
